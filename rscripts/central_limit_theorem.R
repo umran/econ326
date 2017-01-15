@@ -52,11 +52,11 @@ rdist <- function(size, distribution, parameters) {
 ## a normal distribution this is an array containing mean and sd
 genData <- function(N, simulations, distribution, distribution_parameters) {
   
-  ## Defines datasets
+  ## Defines matrices to store means and vars
   means <- matrix(NA, nrow = simulations, ncol = length(N))
   vars <- means
   
-  ## Populates data sets
+  ## Populates matrices with means and vars
   for(i in 1:length(N)) {
     n <- N[i]
     dat <- matrix(rdist(n*simulations, distribution, distribution_parameters), nrow = simulations, ncol = n)
@@ -86,7 +86,7 @@ genPlots <- function(data, title) {
   
   cltPlot <- ggplot(data=data, aes(x=value, fill=sampleSize)) +
     geom_histogram(alpha=0.8, position="identity", bins=100) +
-    scale_x_continuous(name="sample mean") +
+    scale_x_continuous(name="value") +
     scale_fill_brewer(type="div",palette="RdYlGn",
                       name="N",label=N) +
     labs(title=title) +
@@ -110,8 +110,12 @@ doAll <- function(N, simulations, distribution, distribution_parameters) {
   
   ## Generates data from specified distribution
   data <- genData(N, simulations, distribution, distribution_parameters)
-  means <- data["means"]
-  vars <- data["vars"]
+  means <- data$means
+  vars <- data$vars
+  
+  ## Compute mean and variance of the sample means
+  meanSampleMeans <- apply(means, 2, mean)
+  varSampleMeans <- apply(means, 2, var)
   
   ## Generates Histograms of sample means and 
   ## variances of samples from specified distribution
@@ -119,7 +123,7 @@ doAll <- function(N, simulations, distribution, distribution_parameters) {
   varsHistogram <- genPlots(vars, titleVars)
   
   ## Returns the generated histograms
-  return(list(means=meansHistogram, vars=varsHistogram))
+  return(list(means=meansHistogram, vars=varsHistogram, meanSampleMeans=meanSampleMeans, varSampleMeans=varSampleMeans))
 }
 
 ## Defines different sample sizes
@@ -127,14 +131,22 @@ doAll <- function(N, simulations, distribution, distribution_parameters) {
 N <- c(8,32,128)
 simulations <- 5000
 
+## Generates results for the normal distribution case
+resultsNormal <- doAll(N, simulations, "normal", c(0,1))
 ## Generates graphs of means and variances of samples generated from
 ## normal distribution
-plotsNormal <- doAll(N, simulations, "normal", c(0,1))
-plotsNormal["means"]
-plotsNormal["vars"]
+resultsNormal["means"]
+resultsNormal["vars"]
+## Displays the mean and variance of sample means for each sample size (normal dist.)
+resultsNormal["meanSampleMeans"]
+resultsNormal["varSampleMeans"]
 
+## Generates results for the uniform distribution case
+resultsUniform <- doAll(N, simulations, "uniform")
 ## Generates graphs of means and variances of samples generated from
 ## uniform distribution
-plotsUniform <- doAll(N, simulations, "uniform")
-plotsUniform["means"]
-plotsUniform["vars"]
+resultsUniform["means"]
+resultsUniform["vars"]
+## Displays the mean and variance of sample means for each sample size (uniform dist.)
+resultsUniform["meanSampleMeans"]
+resultsUniform["varSampleMeans"]
