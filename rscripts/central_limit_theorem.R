@@ -1,8 +1,9 @@
-## Creates a clean canvas
+## All great things begin with a tabula rasa
 rm(list=ls())
 graphics.off()
 
-## Defines helper function to download and/or load the necessary libraries
+## Defines helper function to download and/or load
+## the necessary libraries
 load.fun <- function(x) {
   x <- as.character(substitute(x))
   if(isTRUE(x %in% .packages(all.available=TRUE))) {
@@ -15,11 +16,12 @@ load.fun <- function(x) {
   }
 }
 
-## Loads necessary libraries by calling the helper function with library names given as arguments
+## Loads necessary libraries by calling the helper function
+## with library names given as arguments
 load.fun(ggplot2)
 load.fun(reshape)
 
-## Defines helper functions to avoid repetitions in code
+## Below are helper functions to avoid repetitions in code
 
 ## Function to generate an arbitrary number of random numbers 
 ## from an arbitrary distribution specified in the arguments as
@@ -76,6 +78,9 @@ longify <- function(data) {
   return(df)
 }
 
+## Function to generate ggplots of data specified by the first
+## argument along with a title or description passed as the
+## second argument
 genPlots <- function(data, title) {
   data <- longify(data)
   
@@ -90,6 +95,9 @@ genPlots <- function(data, title) {
   return(cltPlot)
 }
 
+## Function tying all subparts together that generates
+## data from a given distribution and generates histograms of
+## the sample means and variances of all the samples
 doAll <- function(N, simulations, distribution, distribution_parameters) {
   
   if(distribution == "normal"){
@@ -119,13 +127,13 @@ doAll <- function(N, simulations, distribution, distribution_parameters) {
 N <- c(8,32,128)
 simulations <- 5000
 
-## Generate graphs of means and variances of samples generated from
+## Generates graphs of means and variances of samples generated from
 ## normal distribution
 plotsNormal <- doAll(N, simulations, "normal", c(0,1))
 plotsNormal["means"]
 plotsNormal["vars"]
 
-## Plot graphs of means and variances of samples generated from
+## Generates graphs of means and variances of samples generated from
 ## uniform distribution
 plotsUniform <- doAll(N, simulations, "uniform")
 plotsUniform["means"]
