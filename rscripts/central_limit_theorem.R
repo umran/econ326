@@ -27,7 +27,7 @@ load.fun(reshape)
 ## from an arbitrary distribution specified in the arguments as
 ## size and distribution. Takes an optional argument, parameters,
 ## to specify distribution parameters such as mean and sd in the
-# case of normal distribution
+## case of normal distribution
 rdist <- function(size, distribution, parameters) {
   if (distribution == "normal") {
     mean <- parameters[1]
