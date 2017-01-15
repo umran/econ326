@@ -133,20 +133,24 @@ simulations <- 5000
 
 ## Generates results for the normal distribution case
 resultsNormal <- doAll(N, simulations, "normal", c(0,1))
+
 ## Generates graphs of means and variances of samples generated from
 ## normal distribution
-resultsNormal["means"]
-resultsNormal["vars"]
+resultsNormal$means
+resultsNormal$vars
+
 ## Displays the mean and variance of sample means for each sample size (normal dist.)
-resultsNormal["meanSampleMeans"]
-resultsNormal["varSampleMeans"]
+resultsNormal$meanSampleMeans
+resultsNormal$varSampleMeans
 
 ## Generates results for the uniform distribution case
 resultsUniform <- doAll(N, simulations, "uniform")
+
 ## Generates graphs of means and variances of samples generated from
 ## uniform distribution
-resultsUniform["means"]
-resultsUniform["vars"]
+resultsUniform$means
+resultsUniform$vars
+
 ## Displays the mean and variance of sample means for each sample size (uniform dist.)
-resultsUniform["meanSampleMeans"]
-resultsUniform["varSampleMeans"]
+resultsUniform$meanSampleMeans
+resultsUniform$varSampleMeans
