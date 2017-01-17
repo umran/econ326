@@ -14,28 +14,46 @@ load.fun <- function(x) {
 
 load.fun("ggplot2")
 
-## Loads inflation data from the two metrics into two data frames
-cpi_data <- read.table("http://127.0.0.1/CPALTT01USQ661S.csv", header = TRUE, sep = ",")
-gdp_def_data <- read.table("http://127.0.0.1/GDPDEF.csv", header = TRUE, sep = ",")
-
-## Asserts equivalency of size between the two datasets
-length(cpi_data) == length(gdp_def_data)
+## Loads inflation data from the two metrics into two data frames for both the US and Canada
+## US
+us_cpi_data <- read.table("http://127.0.0.1/CPALTT01USQ661S.csv", header = TRUE, sep = ",")
+us_gdp_def_data <- read.table("http://127.0.0.1/GDPDEF.csv", header = TRUE, sep = ",")
+## Canada
+can_cpi_data <- read.table("http://127.0.0.1/CANCPIALLQINMEI.csv", header = TRUE, sep = ",")
+can_gdp_def_data <- read.table("http://127.0.0.1/CANGDPDEFQISMEI.csv", header = TRUE, sep = ",")
 
 ## Merges data horizontally by date
-merged_data <- merge(cpi_data, gdp_def_data, by = "DATE")
+## US
+us_merged_data <- merge(us_cpi_data, us_gdp_def_data, by = "DATE")
+names(us_merged_data) <- c("DATE", "CPI", "GDPDEF")
+## Canada
+can_merged_data <- merge(can_cpi_data, can_gdp_def_data, by = "DATE")
+names(can_merged_data) <- c("DATE", "CPI", "GDPDEF")
 
 ## Computes correlation coefficient between CPI and GDP
-cpi <- merged_data$CPALTT01USQ661S_NBD20090101
-gdp_def <- merged_data$GDPDEF_NBD20090101
-
-corr_cpi_gdp_def <- cor(cpi, gdp_def)
-
-corr_cpi_gdp_def
+## US
+us_cpi <- us_merged_data$CPI
+us_gdp_def <- us_merged_data$GDPDEF
+us_corr_cpi_gdp_def <- cor(us_cpi, us_gdp_def)
+us_corr_cpi_gdp_def
+## Canada
+can_cpi <- can_merged_data$CPI
+can_gdp_def <- can_merged_data$GDPDEF
+can_corr_cpi_gdp_def <- cor(can_cpi, can_gdp_def)
+can_corr_cpi_gdp_def
 
 ## Generates scatter of CPI vs GDP Deflator
-scatter <- ggplot(merged_data, aes(x=CPALTT01USQ661S_NBD20090101, y=GDPDEF_NBD20090101)) +
+## US
+us_scatter <- ggplot(us_merged_data, aes(x=CPI, y=GDPDEF)) +
   geom_point(shape=1) +
   scale_colour_hue(l=50) +
-  geom_smooth(method=lm, se=FALSE)
-
-scatter
+  geom_smooth(method=lm, se=FALSE) +
+  labs(title="United States")
+us_scatter
+## Canada
+can_scatter <- ggplot(can_merged_data, aes(x=CPI, y=GDPDEF)) +
+  geom_point(shape=1) +
+  scale_colour_hue(l=50) +
+  geom_smooth(method=lm, se=FALSE) +
+  labs(title="Canada")
+can_scatter

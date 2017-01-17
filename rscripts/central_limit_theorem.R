@@ -87,7 +87,7 @@ genPlots <- function(data, title) {
   cltPlot <- ggplot(data=data, aes(x=value, fill=sampleSize)) +
     geom_histogram(alpha=0.8, position="identity", bins=100) +
     scale_x_continuous(name="value") +
-    scale_fill_brewer(type="div",palette="RdYlGn",
+    scale_fill_brewer(type="div",palette="Set1",
                       name="N",label=N) +
     labs(title=title) +
     facet_grid(sampleSize ~ . ) + theme_minimal()
