@@ -27,37 +27,37 @@ inflation_rates_gdpdef <- data.frame()
 
 ## Calculates interest rates based on cpi
 for(i in 2:length(cpi_data$CPI)) {
-  date <- as.character(cpi_data$DATE[i])
+  period <- paste(as.character(cpi_data$DATE[i-1]), as.character(cpi_data$DATE[i]), sep=" to ")
   pi <- ((cpi_data$CPI[i]/cpi_data$CPI[i-1])-1)*100
   
-  inflation_rates_cpi[i-1, 1] <- date
+  inflation_rates_cpi[i-1, 1] <- period
   inflation_rates_cpi[i-1, 2] <- pi
 }
 
 ## Gives names to columns
-names(inflation_rates_cpi) <- c("DATE","INFLATION")
+names(inflation_rates_cpi) <- c("PERIOD","INFLATION")
 
 ## Calculates interest rates based on gdp deflator
 for(i in 2:length(gdpdef_data$GDPDEF)) {
-  date <- as.character(gdpdef_data$DATE[i])
+  period <- paste(as.character(gdpdef_data$DATE[i-1]), as.character(gdpdef_data$DATE[i]), sep=" to ")
   pi <- ((gdpdef_data$GDPDEF[i]/gdpdef_data$GDPDEF[i-1])-1)*100
   
-  inflation_rates_gdpdef[i-1, 1] <- date
+  inflation_rates_gdpdef[i-1, 1] <- period
   inflation_rates_gdpdef[i-1, 2] <- pi
 }
 
 ## Gives names to columns
-names(inflation_rates_gdpdef) <- c("DATE","INFLATION")
+names(inflation_rates_gdpdef) <- c("PERIOD","INFLATION")
 
 ## Generates timeseries graph of inflation as measured by the CPI
-ggplot(inflation_rates_cpi, aes(DATE, INFLATION, group = 1)) + 
+ggplot(inflation_rates_cpi, aes(PERIOD, INFLATION, group = 1)) + 
   geom_line() +
   xlab("Time Period") + 
   ylab("Rate of Inflation (%)") +
   labs(title="Inflation as Measured by the CPI for Canada")
 
 ## Generates timeseries graph of inflation as measured by the GDP deflator
-ggplot(inflation_rates_gdpdef, aes(DATE, INFLATION, group = 1)) + 
+ggplot(inflation_rates_gdpdef, aes(PERIOD, INFLATION, group = 1)) + 
   geom_line() +
   xlab("Time Period") + 
   ylab("Rate of Inflation (%)") +
