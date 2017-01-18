@@ -15,7 +15,7 @@ load.fun <- function(x) {
 load.fun("ggplot2")
 load.fun("xtable")
 
-## Loads inflation data from the two metrics into two data frames for both the US and Canada
+## Loads inflation data from the two metrics into two data frames
 cpi_data <- read.table("http://127.0.0.1/CPALTT01USQ661S.csv", header = TRUE, sep = ",")
 gdpdef_data <- read.table("http://127.0.0.1/GDPDEF.csv", header = TRUE, sep = ",")
 
